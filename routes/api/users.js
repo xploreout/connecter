@@ -4,7 +4,9 @@ const { check, validationResult } = require('express-validator');
 //see doc express-validator.gitbub.io/docs
 const gravatar = require('gravatar')
 const User = require('../../models/User');
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const config = require('config')
 
 router.post(
   '/',
@@ -49,15 +51,27 @@ router.post(
 
       await user.save();
 
-    //return json web token
+      const payload = {
+        user: {
+          id: user.id
+        }
+      }
+      jwt.sign(
+        payload, 
+        config.get('jwtSecret'),
+        { expiresIn: 360000 }, 
+        (err, token)=>{
+          if(err) throw err;
+          res.json({ token })
+        });
+
+    //can check token from postman and paste to jwt.io
     
-    res.send('User saved');
+      // res.send('User saved');
     } catch(err) {
       console.error(err.message);
       res.status(500).send('server error')
     }
-
-    
   }
 );
 
