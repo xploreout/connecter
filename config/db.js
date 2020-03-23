@@ -9,13 +9,13 @@ const connectDB = async () => {
     await mongoose.connect(db, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-   
+      useFindAndModify: false
     });
-    console.log('mongodb is connnected...')
+    console.log('mongodb is connnected...');
   } catch (err) {
     console.err(err.message);
     process.exit(1); //exit with failure
   }
-}
+};
 
 module.exports = connectDB;

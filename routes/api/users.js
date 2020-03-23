@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { check, validationResult } = require('express-validator');
 //see doc express-validator.gitbub.io/docs
 const gravatar = require('gravatar')
 const User = require('../../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config')
+const { check, validationResult } = require('express-validator');
 
 router.post(
   '/',
