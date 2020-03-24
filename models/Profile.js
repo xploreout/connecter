@@ -29,6 +29,7 @@ const ProfileSchema = new mongoose.Schema({
     {
     title: {
       type: String,
+      required: true
       },
     company: {
       type: String,
@@ -58,6 +59,7 @@ const ProfileSchema = new mongoose.Schema({
     {
       school: {
         type: String,
+        required: true
       },
       degree: {
         type: String,

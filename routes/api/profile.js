@@ -7,6 +7,8 @@ const { check, validationResult } = require('express-validator');
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
 
+let profile = {};
+
 router.get('/me', auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({
@@ -52,9 +54,9 @@ router.post(
       bio,
       status,
       githubusername,
-      social
+      social,
       // education,
-      // experience
+      experience
     } = req.body;
 
     let profileFields = {};
@@ -93,7 +95,7 @@ router.post(
     };
 
     try {
-      let profile = await Profile.findOne({ user: req.user.id });
+      profile = await Profile.findOne({ user: req.user.id });
 
       if (profile) {
         profile = await Profile.findOneAndUpdate(
@@ -115,13 +117,139 @@ router.post(
   }
 );
 
-// router.delete('/profile/delete', auth, async (req, res) => {
-//   try {
+//@delete profile and user
+router.delete('/', auth, async (req, res) => {
+  try {
+    await Profile.findOneAndRemove({ user: req.user.id });
 
-//   } catch (error) {
-//     console.error(error.message);
-//     res.status(500).send('Server Error')
-//   }
-// });
+    await User.findOneAndRemove({ _id: req.user.id });
+
+    res.json('User and profile deleted');
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+router.put(
+  '/experience',
+  [
+    auth,
+    [
+      check('title', 'Title is needed')
+        .not()
+        .isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const {
+      company,
+      website,
+      title,
+      location,
+      from,
+      to,
+      current,
+      description
+    } = req.body;
+
+    const newExp = {
+      company,
+      title,
+      website,
+      location,
+      from,
+      to,
+      current,
+      description
+    };
+
+    try {
+      profile = await Profile.findOne({ user: req.user.id });
+
+      profile.experience.unshift(newExp);
+
+      await profile.save();
+
+      return res.json(profile);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
+router.delete('/experience/:exp_id', auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+
+    const { experience } = profile;
+
+    profile.experience = profile.experience.filter(
+      id => id._id.toString() !== req.params.exp_id
+    );
+
+    await profile.save();
+
+    res.json(profile);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+router.put(
+  '/education',
+  [
+    auth,
+    [
+      check('school', 'School is required')
+        .not()
+        .isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { school, degree } = req.body;
+    const eduFields = { school, degree };
+
+    try {
+      const profile = await Profile.findOne({ user: req.user.id });
+
+      profile.education.unshift(eduFields);
+
+      await profile.save();
+
+      return res.json(profile);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+router.delete('/education/:edu_id', auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+
+    profile.education = profile.education.filter(
+      edu => edu._id.toString() !== req.params.edu_id
+    );
+
+    await profile.save();
+
+    res.json(profile);
+  } catch (error) {}
+});
 
 module.exports = router;
