@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const config = require('config');
+const axios = require('axios');
 
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
@@ -249,7 +251,29 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
     await profile.save();
 
     res.json(profile);
-  } catch (error) {}
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+router.get('/github/:username', async (req, res) => {
+  try {
+    const uri = encodeURI(
+      `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`
+    );
+    const headers = {
+      'user-agent': 'node.js',
+      Authorization: `token ${config.get('githubToken')}`
+    };
+
+    const gitHubResponse = await axios.get(uri, { headers });
+
+    return res.json(gitHubResponse.data);
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).send('Server Error');
+  }
 });
 
 module.exports = router;
