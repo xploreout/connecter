@@ -2,10 +2,11 @@ import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
+import PropTypes from 'prop-types'; //impt es7 snippeet extension
 
 //import axios from 'axios';
 
-const Register = (props) => {
+const Register = ({ setAlert }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,7 +22,7 @@ const Register = (props) => {
   const handleSubmit = async e => {
     e.preventDefault();
     if (password !== password2) {
-      props.setAlert('Passwords do not match', 'danger');
+      setAlert('Passwords do not match', 'danger');
     } else {
       console.log('Success')
       //<--this is done without redux----------
@@ -108,4 +109,7 @@ const Register = (props) => {
   );
 };
 
+Register.prototype = {
+  setAlert: PropTypes.func.isRequired, //ptfr es7 snippeet extension
+}
 export default connect(null, { setAlert }) (Register);
