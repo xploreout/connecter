@@ -18,7 +18,7 @@ router.post(
     check('password', 'Password need 6 is required').isLength({ min: 6 })
   ],
    async (req, res) => {
-    console.log(req.body); //need bodyparser or express.json() to get req.body
+    // console.log(req.body); //need bodyparser or express.json() to get req.body
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
