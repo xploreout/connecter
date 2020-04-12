@@ -1,7 +1,10 @@
 import React, { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { login } from '../../actions/auth';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-const Login = () => {
+const Login = ({ login, isAuthenticated}) => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -14,15 +17,17 @@ const Login = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-      console.log('login success');
+      console.log('Login success');
+    login(email, password);
   };
+
+  if(isAuthenticated) {
+    // return <Redirect to='/dashboard' />
+  }
   
   return (
     <Fragment>
-      <h1 className='large text-primary'>Sign Up</h1>
-      <p className='lead'>
-        <i className='fas fa-user'></i> Create Your Account
-      </p>
+      <h1 className='large text-primary'>Login</h1>
       <form className='form' onSubmit={e => handleSubmit(e)}>
         <div className='form-group'>
           <input
@@ -52,10 +57,21 @@ const Login = () => {
         <input type='submit' value='Login' className='btn btn-primary' />
       </form>
       <p className='my-1'>
-        Don't have an account? <Link to='/register'>Sign In</Link>
+        Don't have an account? <Link to='/register'>Sign Up</Link>
       </p>
     </Fragment>
   );
 };
 
-export default Login;
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  setAlert: PropTypes.func, //ptfr es7 snippeet extension
+  isAuthenticated: PropTypes.bool
+}
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+})
+
+export default connect(mapStateToProps, { login })(Login);
+
