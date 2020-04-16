@@ -23,10 +23,10 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout}) => {
       </li>
       
       <li>
-        <Link to='/register'>Register</Link>
+        <Link to="/register">Register</Link>
       </li>
       <li>
-        <Link to='/login'>Login</Link>
+        <Link to="/login">Login</Link>
       </li>
     </ul>
   );
@@ -34,7 +34,7 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout}) => {
   return (
     <nav className='navbar bg-dark'>
       <h1>
-        <Link to='/'>Connect Dev</Link>
+        <Link to="/">Connect Dev</Link>
       </h1>
       { loading && guestLinks() }
       {!loading && (

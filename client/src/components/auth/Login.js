@@ -54,10 +54,10 @@ const Login = ({ login, isAuthenticated}) => {
             required
           />
         </div>
-        <input type='submit' value='Login' className='btn btn-primary' />
+        <input type='submit' value="Login" className="btn btn-primary" />
       </form>
       <p className='my-1'>
-        Don't have an account? <Link to='/register'>Sign Up</Link>
+        Don't have an account? <Link to="/register">Sign Up</Link>
       </p>
     </Fragment>
   );
