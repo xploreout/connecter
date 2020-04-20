@@ -21,8 +21,12 @@ router.get('/me', auth, async (req, res) => {
       return res.status(400).json({ msg: 'there is no profile for this user' });
     }
 
+    // const test = res.json(profile.populate('user'))
+
     // only populate from user document if profile exists
+    // console.log(test, 'profile.user...');
     return res.json(profile.populate('user', ['name', 'avatar']));
+    // return res.json(profile.populate('user'));
   } catch (err) {
     console.error(err.message);
     res.status(400).json({ msg: 'Server Error' });
