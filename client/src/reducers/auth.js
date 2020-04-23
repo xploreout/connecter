@@ -40,7 +40,6 @@ export default function(state = initialState, action) {
     case LOGIN_FAILED:
     case LOGOUT:
       localStorage.removeItem('token');
-      console.log('reducer logout/fail login')
       return {
         ...state,
         token: null,

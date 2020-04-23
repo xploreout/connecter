@@ -9,9 +9,12 @@ import {
 } from './types';
 import axios from 'axios';
 import { setAlert } from './alert';
-
+import setAuthToken from '../utils/setAuthToken';
 
 export const loadUser = () => async dispatch => {
+  if (localStorage.token){
+    setAuthToken(localStorage.token);
+  }
   try {
     const res = await axios.get('/api/auth');
     dispatch ({
@@ -36,13 +39,13 @@ export const login = ( email, password ) => async dispatch => {
   try {
     const res = await axios.post('/api/auth', body, config);
 
+  
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data
     });
-    dispatch({
-      type: USER_LOADED
-    });
+
+    dispatch(loadUser()); 
 
   } catch(error) {
     // const errors = error.response.data.errors;
