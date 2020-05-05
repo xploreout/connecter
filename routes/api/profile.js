@@ -57,9 +57,14 @@ router.post(
       bio,
       status,
       githubusername,
-      social,
+      youtube,
+      instagram,
+      facebook,
+      linkedin,
+      twitter
+
       // education,
-      experience
+      // experience
     } = req.body;
 
     let profileFields = {};
@@ -76,7 +81,6 @@ router.post(
     if (status) profileFields.status = status;
     if (githubusername) profileFields.githubusername = githubusername;
 
-    const { youtube, twitter, instagram, linkedin, facebook } = social;
     // const { school, degree } = education;
     // const { title, company, website, location, from, to, current, description } = experience;
 
@@ -99,7 +103,6 @@ router.post(
 
     try {
       profile = await Profile.findOne({ user: req.user.id });
-
       if (profile) {
         profile = await Profile.findOneAndUpdate(
           { user: req.user.id },
@@ -172,6 +175,8 @@ router.put(
       current,
       description
     };
+
+    console.log('inside /api/pro/exp');
 
     try {
       profile = await Profile.findOne({ user: req.user.id });
