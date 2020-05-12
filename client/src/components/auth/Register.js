@@ -49,10 +49,12 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
       //------->
     }
     if(isAuthenticated) {
+      console.log(`is auth....`)
       return (
         <Redirect to="/dashboard" />
       )
     }
+   
   };
   return (
     <Fragment>

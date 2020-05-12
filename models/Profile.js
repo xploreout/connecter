@@ -66,6 +66,22 @@ const ProfileSchema = new mongoose.Schema({
       },
       degree: {
         type: String,
+      },
+      fieldofstudy: {
+        type: String,
+      },
+      from: {
+        type: Date,
+      },
+      to: {
+        type: Date,
+      },
+      current: {
+        type: Boolean,
+        default: false
+      },
+      description: {
+        type: String,
       }
     }
   ],

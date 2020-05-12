@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { createProfile, getCurrentProfile } from '../../actions/profile';
 import { connect } from 'react-redux';
-import { profile_url } from 'gravatar';
 
 const EditProfile = ({
   profile: { profile, loading },
@@ -45,7 +44,7 @@ const EditProfile = ({
       instagram: loading || !profile.social ? '' : profile.social.instagram,
       youtube: loading || !profile.social ? '' : profile.social.youtube
     });
-  }, [loading, getCurrentProfile]);
+  }, [loading]);
 
   const {
     company,
@@ -69,7 +68,7 @@ const EditProfile = ({
 
   const onSubmitHandler = e => {
     e.preventDefault();
-    createProfile(formData, history, true);
+    createProfile(formData, history, true); //true is setting edit=true
   };
 
   return (

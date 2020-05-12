@@ -8,6 +8,7 @@ const { check, validationResult } = require('express-validator');
 
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+const Post = require('../../models/Post');
 
 let profile = {};
 
@@ -123,14 +124,37 @@ router.post(
   }
 );
 
+//get to list all profiles
+router.get('/', async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate('user', ['name', 'avatar']);
+    res.json(profiles);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+    const profile = await Profile.findById(req.profile.id);
+
+    return res.json(profile);
+
+  } catch (error) {
+    res.status(500).send('Server Error')
+  }
+})
 //@delete profile and user
 router.delete('/', auth, async (req, res) => {
   try {
+    await Post.deleteMany({ user: req.user.id });
+
     await Profile.findOneAndRemove({ user: req.user.id });
 
     await User.findOneAndRemove({ _id: req.user.id });
 
-    res.json('User and profile deleted');
+    res.json('User, post and profile are deleted');
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server Error');
@@ -176,7 +200,6 @@ router.put(
       description
     };
 
-    console.log('inside /api/pro/exp');
 
     try {
       profile = await Profile.findOne({ user: req.user.id });
@@ -229,8 +252,8 @@ router.put(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { school, degree } = req.body;
-    const eduFields = { school, degree };
+    const { school, degree, fieldofstudy, from, to, current, description } = req.body;
+    const eduFields = { school, degree, fieldofstudy, from, to, current, description };
 
     try {
       const profile = await Profile.findOne({ user: req.user.id });
