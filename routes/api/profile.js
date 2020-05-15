@@ -144,7 +144,8 @@ router.get('/:id', async (req, res) => {
   } catch (error) {
     res.status(500).send('Server Error')
   }
-})
+});
+
 //@delete profile and user
 router.delete('/', auth, async (req, res) => {
   try {
@@ -283,6 +284,19 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server Error');
+  }
+});
+
+
+router.get('/user/:userid', async(req, res)=> {
+  try {
+    const profile = await Profile.findOne({ user: req.params.userid})
+
+    res.json(profile);
+    
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send('Server Error')
   }
 });
 

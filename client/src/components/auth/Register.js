@@ -47,7 +47,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
       //   console.error(error.message);
       // }
       //------->
-    }
+    }};
     if(isAuthenticated) {
       console.log(`is auth....`)
       return (
@@ -55,7 +55,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
       )
     }
    
-  };
+  
   return (
     <Fragment>
       <h1 className='large text-primary'>Sign Up</h1>
