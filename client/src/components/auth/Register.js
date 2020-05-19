@@ -47,13 +47,15 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
       //   console.error(error.message);
       // }
       //------->
-    }
+    }};
     if(isAuthenticated) {
+      console.log(`is auth....`)
       return (
         <Redirect to="/dashboard" />
       )
     }
-  };
+   
+  
   return (
     <Fragment>
       <h1 className='large text-primary'>Sign Up</h1>
