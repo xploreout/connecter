@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getProfileById } from '../../actions/profile';
+import ProfileTop from './ProfileTop';
 
 const Profile = ({
   getProfileById,
@@ -12,15 +13,24 @@ const Profile = ({
 }) => {
   useEffect(() => {
     getProfileById(match.params.id);
-  }, [getProfileById]);
+  }, [getProfileById, match.params.id ]);
 
-  console.log(profile && JSON.stringify(profile));
   return (
     <Fragment>
       {profile === null || loading ? (
         'Waiting...'
       ) : (
-        <Fragment>PROFILE</Fragment>
+        <Fragment>
+          PROFILE
+          {auth.isAuthenticated &&
+            loading === false && 
+            auth.user._id === profile.user && (
+             
+              <Link to='/edit-profile' className='btn btn-dark'>
+                Edit Profile
+              </Link>
+            )}
+        </Fragment>
       )}
       <Link to='/profiles' className='btn btn-light'>
         Back to Profiles

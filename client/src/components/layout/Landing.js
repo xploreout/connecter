@@ -28,7 +28,7 @@ import PropTypes from 'prop-types';
 };
 
 Landing.propTypes = {
-  isAuthenticated: PropTypes.object.isRequired,
+  isAuthenticated: PropTypes.bool
 }
 
 const mapStateToProps = state => ({
