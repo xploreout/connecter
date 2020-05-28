@@ -8,6 +8,8 @@ import {
   DELETE_ACCOUNT,
   LOGOUT,
   SET_ALERT,
+  GET_REPOS,
+  NO_REPOS,
 } from './types';
 import { setAlert } from './alert';
 
@@ -207,6 +209,21 @@ export const getProfileById = (userId) => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+export const getGithubRepos = (userName) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/profile/github/${userName}`);
+    dispatch({
+      type: GET_REPOS,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: NO_REPOS,
       payload: { msg: err.response.statusText, status: err.response.status },
     });
   }

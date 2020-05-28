@@ -14,3 +14,7 @@ export const PROFILE_ERROR = 'PROFILE_ERROR';
 export const CLEAR_PROFILE = 'CLEAR_PROFILE';
 export const CREATE_PROFILE = 'CREATE_PROFILE';
 export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
+export const GET_REPOS = 'GET_REPOS';
+export const NO_REPOS = 'NO_REPOS';
+export const GET_POST = 'GET_POST';
+export const ERROR_POST = 'ERROR_POST';

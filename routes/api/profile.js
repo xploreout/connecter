@@ -98,6 +98,7 @@ router.post(
         ? skills
         : skills.split(',').map(skill => skill.trim()),
       bio,
+      githubusername,
       social: socialFields
       // education: educationFields
     };
@@ -290,7 +291,7 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
 
 router.get('/user/:userid', async(req, res)=> {
   try {
-    const profile = await Profile.findOne({ user: req.params.userid})
+    const profile = await Profile.findOne({ user: req.params.userid}).populate('user', ['name', 'avatar']);
 
     res.json(profile);
     
