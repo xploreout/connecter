@@ -41,6 +41,32 @@ router.post(
   }
 );
 
+router.get('/', auth, async (req,res) => {
+  try {
+    const posts = await Post.find().sort({ date: -1 });
+
+    return res.json(posts);
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).json({msg: 'Server Error'})
+  }
+});
+
+router.get('/:post_id', auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.post_id);
+
+    if (!post) {
+      return res.status(404).json({ msg: 'Post not found'})
+    }
+    
+    res.json(post);
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).json({msg: 'Server Error'})
+  }
+})
+
 router.delete('/:post_id', auth, async (req, res) => {
   try {
     await Post.findOneAndRemove(req.params.post_id);
